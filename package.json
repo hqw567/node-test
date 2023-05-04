@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/main.js"
+    "start": "nodemon ./src/main.js",
+    "pm2": "pm2 start ./src/main.js --name=node-test",
+    "stop": "pm2 stop node-test",
+    "restart": "pm2 restart node-test",
+    "delete": "pm2 delete node-test"
   },
   "keywords": [],
   "author": "",
