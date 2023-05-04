@@ -12,7 +12,7 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     format: 'pem',
   },
 })
-const keysFolderPath = path.join(__dirname, '/src/keys')
+const keysFolderPath = path.join(__dirname, '/keys')
 if (!fs.existsSync(keysFolderPath)) {
   fs.mkdirSync(keysFolderPath)
 }
