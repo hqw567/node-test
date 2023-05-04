@@ -1,11 +1,11 @@
 const mysql = require('mysql2')
-
+const { DB_NAME, DB_PASSWORD, DB_USER } = require('../config/server')
 const connectionPool = mysql.createPool({
   host: 'localhost',
   port: 3306,
-  database: 'hubcode',
-  user: 'root',
-  password: 'root',
+  database: DB_NAME,
+  user: DB_USER,
+  password: DB_PASSWORD,
   connectionLimit: 5,
 })
 
