@@ -36,6 +36,9 @@ app.on('error', (error, ctx) => {
       code = -2001
       message = '没有操作权限'
       break
+    default:
+      code = -9999
+      message = '错误的请求'
   }
 
   ctx.body = {
