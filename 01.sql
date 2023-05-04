@@ -5,10 +5,10 @@ IF
 		name VARCHAR ( 20 ) NOT NULL UNIQUE,
 		password VARCHAR ( 60 ) NOT NULL,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	)
-	
-	
+
+
 
 INSERT INTO `user` (name,password) VALUES (?,?)
 
@@ -37,24 +37,24 @@ SELECT
 	m.content content,
 	m.created_at created_at,
 	m.updated_at updated_at,
-	JSON_OBJECT( 'id', u.id, 'name', u.name ) user 
+	JSON_OBJECT( 'id', u.id, 'name', u.name ) user
 FROM
 	moment m
-	LEFT JOIN `user` u ON m.user_id = u.id 
+	LEFT JOIN `user` u ON m.user_id = u.id
 	LIMIT 0,
 	10
-	
-	
-	
+
+
+
 SELECT
 	m.id id,
 	m.content content,
 	m.created_at created_at,
 	m.updated_at updated_at,
-	JSON_OBJECT( 'id', u.id, 'name', u.name ) user 
+	JSON_OBJECT( 'id', u.id, 'name', u.name ) user
 FROM
 	moment m
-	LEFT JOIN `user` u ON m.user_id = u.id 
+	LEFT JOIN `user` u ON m.user_id = u.id
 WHERE
 	m.id = ?
 
@@ -98,11 +98,11 @@ SELECT
 	(SELECT COUNT(*) FROM `comment` WHERE moment_id = m.id) comment_count
 FROM
 	moment m
-	LEFT JOIN `user` u ON m.user_id = u.id 
+	LEFT JOIN `user` u ON m.user_id = u.id
 	LIMIT 0,
 	10
-	
-	
+
+
 
 
 SELECT
@@ -113,11 +113,11 @@ SELECT
 	JSON_OBJECT( 'id', u.id, 'name', u.name ) user,
 	(
 		JSON_ARRAYAGG(
-		JSON_OBJECT( 'id', c.id, 'content', c.content, 'created_at', c.created_at ))) comments 
+		JSON_OBJECT( 'id', c.id, 'content', c.content, 'created_at', c.created_at ))) comments
 FROM
 	moment m
 	LEFT JOIN `user` u ON m.user_id = u.id
-	LEFT JOIN `comment` c ON c.moment_id = m.id 
+	LEFT JOIN `comment` c ON c.moment_id = m.id
 WHERE
 	m.id = 2
 GROUP BY m.id
@@ -131,13 +131,13 @@ SELECT
 	JSON_OBJECT( 'id', u.id, 'name', u.name ) user,
 	(
 		JSON_ARRAYAGG(
-		JSON_OBJECT( 'id', c.id, 'content', c.content, 'created_at', c.created_at ,'user',JSON_OBJECT('id',cu.id,'name',cu.name)))) comments 
+		JSON_OBJECT( 'id', c.id, 'content', c.content, 'created_at', c.created_at ,'user',JSON_OBJECT('id',cu.id,'name',cu.name)))) comments
 FROM
 	moment m
 	LEFT JOIN `user` u ON m.user_id = u.id
 	LEFT JOIN `comment` c ON c.moment_id = m.id
 	LEFT JOIN user cu on cu.id = c.user_id
-	
+
 WHERE
 	m.id = 2
 GROUP BY m.id
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS moment_label (
 	FOREIGN KEY (label_id) REFERENCES label(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
-INSERT INTO moment_label (moment_id,label_id) VALUES (?,?) 
+INSERT INTO moment_label (moment_id,label_id) VALUES (?,?)
 
 SELECT * FROM label WHERE name = ?
 
@@ -187,13 +187,13 @@ SELECT
 	(SELECT COUNT(*) FROM `moment_label` WHERE moment_id = m.id) moment_count
 FROM
 	moment m
-	LEFT JOIN `user` u ON m.user_id = u.id 
+	LEFT JOIN `user` u ON m.user_id = u.id
 	LIMIT 0,
 	10
-	
-	
-	
-	
+
+
+
+
 SELECT
 	m.id id,
 	m.content content,
@@ -211,27 +211,27 @@ SELECT
 				'comment_id',
 				c.comment_id,
 				'user',
-			JSON_OBJECT( 'id', cu.id, 'name', cu.NAME ))) 
+			JSON_OBJECT( 'id', cu.id, 'name', cu.NAME )))
 	FROM
 		`comment` c
-		LEFT JOIN USER cu ON c.user_id = cu.id 
+		LEFT JOIN USER cu ON c.user_id = cu.id
 	WHERE
-		c.moment_id = m.id 
+		c.moment_id = m.id
 	) comments,
 	JSON_ARRAYAGG(
-	JSON_OBJECT( 'id', l.id, 'name', l.NAME )) labels 
+	JSON_OBJECT( 'id', l.id, 'name', l.NAME )) labels
 FROM
 	moment m
 	LEFT JOIN `user` u ON m.user_id = u.id
 	LEFT JOIN moment_label ml ON ml.moment_id = m.id
-	LEFT JOIN label l ON ml.label_id = l.id 
+	LEFT JOIN label l ON ml.label_id = l.id
 WHERE
-	m.id = 8 
+	m.id = 8
 GROUP BY
 	m.id
-	
-	
-	
+
+
+
 
 CREATE TABLE IF NOT EXISTS avatar (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -265,8 +265,7 @@ SELECT
 	(SELECT COUNT(*) FROM `moment_label` WHERE moment_id = m.id) moment_count
 FROM
 	moment m
-	LEFT JOIN `user` u ON m.user_id = u.id 
+	LEFT JOIN `user` u ON m.user_id = u.id
 	LEFT JOIN avatar a ON a.user_id = u.id
 	LIMIT 0,
 	10
-	

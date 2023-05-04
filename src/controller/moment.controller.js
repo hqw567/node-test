@@ -19,7 +19,7 @@ class MomentController {
     // console.log(result)
   }
   async list(ctx, next) {
-    const { offset = 0, size = 10 } = ctx.query
+    const { offset = '0', size = '10' } = ctx.query
 
     try {
       const result = await momentService.queryList({ offset, size })
